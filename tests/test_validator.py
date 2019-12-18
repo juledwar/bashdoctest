@@ -40,6 +40,7 @@ def test_string_command():
 
         $ hello Polly Parrot
         Usage: hello [OPTIONS] NAME
+        Try "hello --help" for help.
         <BLANKLINE>
         Error: Got unexpected extra argument (Parrot)
 
