@@ -90,12 +90,17 @@ class Runner(object):
         '''
 
         for command, expected, options in self._parse_cli_statement(command):
+            end = None
+            pretty = '# {}'
             if 'password' in ' '.join(command):
                 # Ignore anything after 1st arg so passwords are not
                 # shown.
-                print(">>> {} ...".format(command[0:2]))
-            else:
-                print(">>> {}".format(command))
+                end = 2
+                pretty += ' ...'
+
+            # Pretty-print the command in shell-friendly notation
+            quote = lambda x: repr(x) if ' ' in x else str(x)  # noqa: E731
+            print(pretty.format(' '.join(quote(x) for x in command[0:end])))
 
             if options & doctest.SKIP:
                 continue

@@ -39,6 +39,7 @@ Test command line utilities and applications by whitelisting them with app-speci
     >>> tester = Runner()
     >>> tester.call_engines['echo'] = SubprocessValidator()
     >>> tester.teststring(test_str)
+    # echo 'Pining for the fjords'
 
 Click applications
 ~~~~~~~~~~~~~~~~~~
@@ -66,6 +67,7 @@ This can now be tested in docstrings:
     ... 
     ...     $ hello Polly Parrot
     ...     Usage: hello [OPTIONS] NAME
+    ...     Try "hello --help" for help.
     ...     <BLANKLINE>
     ...     Error: Got unexpected extra argument (Parrot)
     ... 
@@ -83,6 +85,9 @@ Click applications can be tested with a ``ClickValidator`` engine:
     >>> tester.call_engines['hello'] = ClickValidator(hello)
 
     >>> tester.teststring(test_str)
+    # hello Polly
+    # hello Polly Parrot
+    # hello 'Polly Parrot'
 
 
 Mixed applications
@@ -120,6 +125,10 @@ Your app can be combined with other command-line utilities by adding multiple en
     >>> tester.call_engines['cat'] = SubprocessValidator()
 
     >>> tester.teststring(test_str)
+    # hello Polly
+    # echo 'Pining for the fjords'
+    # python -c "with open('tmp.txt', 'w+') as f: f.write('Pushing up daisies')"
+    # cat tmp.txt
 
 Suppressing commands
 ~~~~~~~~~~~~~~~~~~~~
@@ -131,7 +140,7 @@ Commands can be skipped altogether with a ``SkipValidator``:
     >>> test_str = '''
     ... .. code-block:: bash
     ... 
-    ...     $ aws storage buckets list
+    ...     $ aws storage buckets list --password $MY_PASSWORD
     ... 
     ... '''
 
@@ -139,6 +148,7 @@ Commands can be skipped altogether with a ``SkipValidator``:
     >>> tester.call_engines['aws'] = SkipValidator()
 
     >>> tester.teststring(test_str)
+    # aws storage ...
 
 
 Illegal commands
@@ -190,6 +200,7 @@ Unrecognized commands will not raise an error if +SKIP is specified
     ...
     ... '''
     >>> tester.teststring(test_str)
+    # nmake all
 
 Error handling
 ~~~~~~~~~~~~~~
@@ -212,10 +223,9 @@ Lines failing to match the command's output will raise an error
     >>> tester.teststring(test_str) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     Traceback (most recent call last):
     ...
-    ValueError: bashdoctest test failed. There, it moved!
-     != "No it didn't!"
-    + There, it moved!
-    - "No it didn't!"
+    ValueError: Differences (ndiff with -expected +actual):
+        - "No it didn't!"
+        + There, it moved!
 
 Known issues
 ------------
@@ -245,10 +255,9 @@ All arguments to commands are passed as arguments to the first command. Therefor
     >>> tester.teststring(test_str) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     Traceback (most recent call last):
     ...
-    ValueError: bashhdoctest test failed. hello > test.txt
-     != 
-    + hello > test.txt
-    - 
+    ValueError: Differences (ndiff with -expected +actual):
+        + hello > test.txt
+    <BLANKLINE>
 
 
 
