@@ -1,6 +1,6 @@
-=======================================
+===========================================
 Bashdoctest Command Line Application Tester
-=======================================
+===========================================
 
 Bashdoctest is a fork of the original "clatter" repo, which is a doctest-style testing tool for command-line applications. It wraps other testing suites and allows them to be tested in docstrings.
 
