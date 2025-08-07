@@ -1,5 +1,7 @@
 
 import os
+import sys
+
 import click
 import pytest
 from click.testing import CliRunner
@@ -29,6 +31,7 @@ def test_hello_world():
     assert result.output == 'Hello Peter!\n'
 
 
+@pytest.mark.skipif(sys.version_info < (3, 10), reason="Python 3.10+ required")
 def test_string_command():
 
     teststr = '''
@@ -40,7 +43,7 @@ def test_string_command():
 
         $ hello Polly Parrot
         Usage: hello [OPTIONS] NAME
-        Try "hello --help" for help.
+        Try 'hello --help' for help.
         <BLANKLINE>
         Error: Got unexpected extra argument (Parrot)
 

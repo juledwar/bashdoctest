@@ -67,7 +67,7 @@ This can now be tested in docstrings:
     ... 
     ...     $ hello Polly Parrot
     ...     Usage: hello [OPTIONS] NAME
-    ...     Try "hello --help" for help.
+    ...     Try 'hello --help' for help.
     ...     <BLANKLINE>
     ...     Error: Got unexpected extra argument (Parrot)
     ... 
@@ -224,8 +224,7 @@ Lines failing to match the command's output will raise an error
     Traceback (most recent call last):
     ...
     ValueError: Differences (ndiff with -expected +actual):
-        - "No it didn't!"
-        + There, it moved!
+        - "No it didn't!"+ There, it moved!
 
 Known issues
 ------------
